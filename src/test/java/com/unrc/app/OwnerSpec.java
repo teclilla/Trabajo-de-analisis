@@ -26,37 +26,25 @@ public class OwnerSpec {
     @Test
     public void shouldValidateMandatoryFields(){
         Owner owner = new Owner();
-
         //check errors
         the(owner).shouldNotBe("valid");
         the(owner.errors().get("first_name")).shouldBeEqual("Name");
         the(owner.errors().get("last_name")).shouldBeEqual("LastName");
         the(owner.errors().get("email")).shouldBeEqual("Email");
-
         //all is good:
         owner.set("first_name","Homer");
         owner.set("last_name","Simpson");
         owner.set("email","homersimpson@fox.com");
-        
         the(owner).shouldBe("valid");
     }
     
    @Test
     public void shouldSaveRecord(){
         Owner owner = new Owner();
-        City city = new City();
-    
-     city.set("name", "space").saveIt();
-        
         owner.set("first_name","Lisa");
         owner.set("last_name","Simpson");
-        owner.set("city_id",city.getId());
-        owner.set("neighborhood", "Bn");
-        owner.set("street", "st_Bn");
-        owner.set("n_street", "111");
         owner.set("email","lisasimpson@fox.com");
         owner.saveIt();
-        
         Owner o = Owner.findFirst("first_name = ?", "Homer");
         the(owner.getId()).shouldBeEqual(o.getId());
     }
